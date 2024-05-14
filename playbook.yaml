@@ -3,7 +3,7 @@
   gather_facts: yes
   roles:
     - ec2_provision
-      #- wordpress
+      # - wordpress
   vars:
     instance_ids: "{{ ec2_instance_result.instance_ids }}"
     ec2_instance_state: "{{ ec2_instance_result.instances[0].state }}"  # Assuming the state is the same for all instances

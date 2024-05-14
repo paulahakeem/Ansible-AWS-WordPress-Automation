@@ -29,8 +29,11 @@
 
     - name: Clone WordPress repository
       git:
-        repo: https://github.com/paulahakeem/WordPress_abi
+        repo: "https://{{ github_token }}@github.com/paulahakeem/WordPress_abi"
         dest: /var/www/html
+      vars_files:
+        - vars/github_secrets.yml
+      #no_log: true  
 
     - name: Create Nginx virtual host file for WordPress
       template:

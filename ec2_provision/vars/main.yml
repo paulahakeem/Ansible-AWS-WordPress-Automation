@@ -1,6 +1,13 @@
----
-#aws_region: "us-east-1"
-#key_pair_name: "my_key_pair"
-#security_group: "sg-044900f0bc9332e5b"
-#vpc_subnet_id: "subnet-0d87441f0a6c423f1"
-
+security_group_rules:
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 443
+    to_port: 443
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 80
+    to_port: 80
+    cidr_ip: 0.0.0.0/0

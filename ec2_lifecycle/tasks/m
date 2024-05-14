@@ -1,0 +1,14 @@
+---
+- name: Stop EC2 Instance
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Stop EC2 instance named "paula"
+      ec2_instance:
+        state: stopped
+        instance_ids: "{{ ec2_instance_id }}"
+      vars:
+        ec2_instance_id: "{{ lookup('aws_ec2', 'instances', filters={'tag:Name':'paula'})['instances'][0]['id'] }}"
+  tags:
+    - stop_ec2
+

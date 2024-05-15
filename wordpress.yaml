@@ -1,0 +1,38 @@
+- name: Provision and Manage EC2 instance
+  hosts: localhost
+  gather_facts: yes
+  roles:
+    - ec2_provision
+
+
+- name: wait untill ec2 initialized
+  hosts: localhost
+  tasks:
+    - name: Delay for 25 seconds
+      pause:
+        seconds: 25
+
+- name: setup WordPress on EC2
+  hosts: ec2_instances #webservers 
+  gather_facts: yes
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - wordpress       
+
+- name: setup mysql on EC2
+  hosts: ec2_instances 
+  gather_facts: yes
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - mysql                         
+
+
+- name: Print EC2 Instance Endpoint
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Print EC2 Instance Endpoint
+      debug:
+        msg: "EC2 Instance Endpoint: http://{{ public_ips[0] }}"

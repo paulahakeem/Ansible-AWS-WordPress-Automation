@@ -1,0 +1,5 @@
+# playbook.yml
+- name: Manage EC2 instances
+  hosts: localhost
+  roles:
+    - ec2_lifecycle

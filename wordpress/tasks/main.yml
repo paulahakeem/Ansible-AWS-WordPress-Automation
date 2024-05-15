@@ -1,56 +1,69 @@
 ---
-- name: Setup WordPress on EC2
-  hosts: your_ec2_instance
-  become: yes
-  tasks:
-    - name: Update apt package cache
-      apt:
-        update_cache: yes
 
-    - name: Install required packages
-      apt:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - nginx
-        - ghostscript
-        - libapache2-mod-php
-        - mysql-server
-        - php
-        - php-bcmath
-        - php-curl
-        - php-imagick
-        - php-intl
-        - php-json
-        - php-mbstring
-        - php-mysql
-        - php-xml
-        - php-zip
+- name: Install apache
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+  notify: Restart Apache
 
-    - name: Clone WordPress repository
-      git:
-        repo: "https://{{ github_token }}@github.com/paulahakeem/WordPress_abi"
-        dest: /var/www/html
-      vars_files:
-        - vars/github_secrets.yml
-      #no_log: true  
+- name: Install php extensions for WordPress
+  apt:
+    pkg: "{{ php_modules }}"
+    state: present
+  notify: Restart Apache
 
-    - name: Create Nginx virtual host file for WordPress
-      template:
-        src: wordpress.nginx.conf
-        dest: /etc/nginx/sites-available/wordpress
-      notify: Reload Nginx
+- name: Clone WordPress from private repository with token authentication
+  git:
+    repo: "https://{{ github_token }}@github.com/paulahakeem/WordPress_abi.git"
+    dest: "/var/www/html/wordpress"
+    version: master
+    clone: yes
+    accept_hostkey: yes
+  register: git_clone_output
 
-    - name: Enable WordPress site
-      file:
-        src: /etc/nginx/sites-available/wordpress
-        dest: /etc/nginx/sites-enabled/wordpress
-        state: link
-      notify: Reload Nginx
+- debug:
+    var: git_clone_output
 
-  handlers:
-    - name: Reload Nginx
-      systemd:
-        name: nginx
-        state: reloaded
+- name: Set ownership and permissions for WordPress files
+  file:
+    path: /var/www/html/wordpress
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+    recurse: yes
 
+- name: Create WordPress configuration file (wp-config.php)
+  template:
+    src: wordpress.conf.j2
+    dest: "/var/www/html/wordpress/wp-config.php"
+    owner: www-data
+    group: www-data
+    mode: '0655'
+
+- name: Create /etc/apache2/sites-available/wordpress.conf
+  template:
+    src: apache.conf.j2
+    dest: /etc/apache2/sites-available/wordpress.conf
+    owner: www-data
+    group: www-data
+    mode: '0655'
+  notify: Restart Apache
+
+- name: Enable WordPress site
+  shell: |
+    a2ensite wordpress
+    a2enmod rewrite
+
+- name: Disable default Apache site
+  apache2_module:
+    state: absent
+    name: 000-default
+  notify: Restart Apache
+
+- name: Remove default Apache site
+  file:
+    path: /etc/apache2/sites-enabled/000-default.conf
+    state: absent
+  notify: Restart Apache

@@ -1,10 +1,29 @@
+# # demo.aws_ec2.yml
+# plugin: amazon.aws.aws_ec2
+
+# # The access key for your AWS account.
+# aws_access_key: AKIAZQ3DQK2FH6EIM6X3
+# # The secret access key for your AWS account.
+# aws_secret_key: UUoQvObsXPtNoy3/iYSSpKw6xvDZuHzp3dXiUOxp
+
+# regions:
+# - us-east-1
+
+
+# keyed_groups:
+#   # add hosts to tag_Name_value groups for each aws_ec2 host's tags.Name variable.
+#   - key: tags.Name
+#     prefix: tag_Name_
+#     separator: ""
+
+
 # demo.aws_ec2.yml
 plugin: amazon.aws.aws_ec2
 
 # The access key for your AWS account.
-aws_access_key: AKIAZQ3DQK2FH6EIM6X3
+aws_access_key: "{{ access_key }}"
 # The secret access key for your AWS account.
-aws_secret_key: UUoQvObsXPtNoy3/iYSSpKw6xvDZuHzp3dXiUOxp
+aws_secret_key: "{{ secret_key }}"
 
 regions:
 - us-east-1
@@ -16,7 +35,3 @@ keyed_groups:
     prefix: tag_Name_
     separator: ""
 
-
-# compose:
-#   # This sets the ansible_host variable to connect with the private IP address without changing the hostname.
-#   ansible_host: ip_address    

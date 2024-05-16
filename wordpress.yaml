@@ -13,7 +13,7 @@
         seconds: 25
 
 - name: setup WordPress on EC2
-  hosts: ec2_instances #webservers 
+  hosts: tag_Name_paula #webservers 
   gather_facts: yes
   become: yes
   remote_user: ubuntu
@@ -21,7 +21,7 @@
     - wordpress       
 
 - name: setup mysql on EC2
-  hosts: ec2_instances 
+  hosts: tag_Name_paula 
   gather_facts: yes
   become: yes
   remote_user: ubuntu

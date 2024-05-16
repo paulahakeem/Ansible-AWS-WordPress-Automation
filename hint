@@ -1,0 +1,6 @@
+ansible-playbook  deploy-odoo-vm.yml -e "@override_vars.yml" --vault-password-file ~/vault_key
+
+the file override_vars.yml has the variables that you need in the run-time
+and also you can use it override default variables 
+
+-- the vault password file contains the vault password and is used to encrypt or decrept variables

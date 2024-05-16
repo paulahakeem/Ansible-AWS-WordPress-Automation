@@ -61,4 +61,12 @@
     name: "MySQL Backup"
     minute: '0'
     hour: '1'
-    job: "mysqldump --all-databases > /var/backups/mysql-$(date +%Y%m%d).sql"
+    job: "mysqldump --all-databases -u root -p '{{ mysql_root_password }}' > /var/backups/mysql-$(date +%Y%m%d).sql"
+
+- name: Add daily backup cron jobd
+  tags: mysql
+  cron:
+    name: "MySQL Backup"
+    minute: '0'
+    hour: '1'
+    job: "mysqldump --all-databases -u root -p '{{ mysql_root_password }}' > /var/backups/mysql-$(date +%Y%m%d).sql"    

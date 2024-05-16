@@ -1,0 +1,11 @@
+region: "us-east-1"
+access_key: "AKIAZQ3DQK2FH6EIM6X3"
+secret_key: "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"
+mysql_root_password: "Paula123@"
+mysql_db: "wordpress"
+mysql_user: "wordpress_user"
+mysql_password: "Paula123@"
+db_host: "localhost"
+github_token: "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"
+instance_id: "{{ lookup('ansible.builtin.file', '/home/paula/ansible-AWS-WordPress-Automation/instance_ids.txt') }}"
+

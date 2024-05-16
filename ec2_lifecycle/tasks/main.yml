@@ -7,12 +7,9 @@
 - name: Start EC2 instance
   tags: [ start ]
   ec2_instance:
-    # region: "{{ region }}"
-    # access_key: "{{ access_key }}"
-    # secret_key: "{{ secret_key }}"
-    region: "us-east-1"
-    access_key: "AKIAZQ3DQK2FH6EIM6X3"
-    secret_key: "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"
+    region: "{{ region }}"
+    access_key: "{{ access_key }}"
+    secret_key: "{{ secret_key }}"
     instance_ids: "{{ instance_id }}"
     
     state: started
@@ -24,9 +21,6 @@
     access_key: "{{ access_key }}"
     secret_key: "{{ secret_key }}"
     instance_ids: "{{ instance_id }}"
-    # region: "us-east-1"
-    # access_key: "AKIAZQ3DQK2FH6EIM6X3"
-    # secret_key: "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"
     state: stopped
 
 - name: Terminate EC2 instance

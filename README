@@ -1,4 +1,4 @@
-ansible-playbook  deploy-odoo-vm.yml -e "@override_vars.yml" --vault-password-file ~/vault_key
+ansible-playbook  wordpress.yaml -e "@override_vars.yml" --vault-password-file ~/vault_key
 
 the file override_vars.yml has the variables that you need in the run-time
 and also you can use it override default variables 

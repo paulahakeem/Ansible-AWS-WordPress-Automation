@@ -29,10 +29,13 @@
     - mysql                         
 
 
-- name: Print EC2 Instance Endpoint
-  hosts: localhost
-  gather_facts: no
+- name: Print EC2 Instance Endpoints
+  hosts: localhost 
+  gather_facts: yes
   tasks:
-    - name: Print EC2 Instance Endpoint
+    - name: Print EC2 Instance Endpoints
       debug:
-        msg: "EC2 Instance Endpoint: http://{{ public_ips[0] }}"
+        msg: "EC2 Instance Endpoint: http://{{ item }}"
+      with_items: "{{ public_ips }}"
+      tags:
+        - print_endpoints

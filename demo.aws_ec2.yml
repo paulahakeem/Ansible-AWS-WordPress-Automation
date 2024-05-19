@@ -1,10 +1,34 @@
+
+
+# demo.aws_ec2.yml
+plugin: amazon.aws.aws_ec2
+
+# The access key for your AWS account.
+aws_access_key: AKIAZQ3DQK2FH6EIM6X3
+# The secret access key for your AWS account.
+aws_secret_key: UUoQvObsXPtNoy3/iYSSpKw6xvDZuHzp3dXiUOxp
+
+regions:
+- us-east-1
+
+
+keyed_groups:
+  # add hosts to tag_Name_value groups for each aws_ec2 host's tags.Name variable.
+  - key: tags.Name
+    prefix: tag_Name_
+    separator: ""
+
+
+
+
+
 # # demo.aws_ec2.yml
 # plugin: amazon.aws.aws_ec2
 
 # # The access key for your AWS account.
-# aws_access_key: AKIAZQ3DQK2FH6EIM6X3
+# aws_access_key: "{{ access_key }}"
 # # The secret access key for your AWS account.
-# aws_secret_key: UUoQvObsXPtNoy3/iYSSpKw6xvDZuHzp3dXiUOxp
+# aws_secret_key: "{{ secret_key }}"
 
 # regions:
 # - us-east-1
@@ -17,21 +41,24 @@
 #     separator: ""
 
 
-# demo.aws_ec2.yml
-plugin: amazon.aws.aws_ec2
 
-# The access key for your AWS account.
-aws_access_key: "{{ access_key }}"
-# The secret access key for your AWS account.
-aws_secret_key: "{{ secret_key }}"
+# # aws_ec2_with_vars.yml
+# plugin: amazon.aws.aws_ec2
 
-regions:
-- us-east-1
+# # Include external variable file
+# vars_files:
+#   - /home/paula/ansible-AWS-WordPress-Automation/override_vars.yml
 
+# # The access key for your AWS account.
+# aws_access_key: "{{ access_key }}"
+# # The secret access key for your AWS account.
+# aws_secret_key: "{{ secret_key }}"
 
-keyed_groups:
-  # add hosts to tag_Name_value groups for each aws_ec2 host's tags.Name variable.
-  - key: tags.Name
-    prefix: tag_Name_
-    separator: ""
+# regions:
+#   - us-east-1
 
+# keyed_groups:
+#   # add hosts to tag_Name_value groups for each aws_ec2 host's tags.Name variable.
+#   - key: tags.Name
+#     prefix: tag_Name_
+#     separator: ""

@@ -1,25 +1,32 @@
+---
 - name: Create SSH Key Pair
   amazon.aws.ec2_key:
-    name: paula-ansible-key
-    region: us-east-1
-    key_material: "{{ lookup('file', '/home/paula/.ssh/id_ed25519.pub') }}"
+    name: "{{ key_name }}"
+    region: "{{ region }}"
+    key_material: "{{ lookup('file', key_pub_path) }}"
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ secret_key }}"
   tags:
     - provision_ec2
 
 - name: Print SSH Public Key
   debug:
-    msg: "{{ lookup('file', '/home/paula/.ssh/id_ed25519.pub') }}"
+    msg: "{{ lookup('file', key_pub_path) }}"
   tags:
     - provision_ec2
 
 - name: Create Security Group
   amazon.aws.ec2_group:
-    name: paula-ansible-security-group
+    name: "{{ security_group_name }}"
     description: "Security group with ports 22, 443, and 80 open"
-    vpc_id: vpc-074ea0531b657dbb3
-    region: us-east-1
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ region }}"
     rules: "{{ security_group_rules }}"
   register: security_group
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ secret_key }}"
   tags:
     - provision_ec2    
 
@@ -27,20 +34,23 @@
   amazon.aws.ec2_instance:
     tags:
       - provision_ec2
-    key_name: paula-ansible-key
-    region: us-east-1
+    key_name: "{{ key_name }}"
+    region: "{{ region }}"
     image:
-      id: ami-04b70fa74e45c3917
-    instance_type: t3.small
+      id: "{{ image_id }}"
+    instance_type: "{{ instance_type }}"
     wait: yes
-    count: 1
+    count: 0
     tags:
-      Name: paula
+      Name: "{{ instance_name }}"
     security_group: "{{ security_group.group_id }}"  
-    subnet_id: subnet-0d87441f0a6c423f1
+    subnet_id: "{{ subnet_id }}"
     network:
       assign_public_ip: true
   register: ec2_instance_result
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ secret_key }}"
   tags:
     - provision_ec2
 
@@ -52,7 +62,20 @@
 - name: Add newly created EC2 instance to host group
   add_host:
     name: "{{ item.public_ip_address }}"
-    groups: ec2_instances
+    groups: tag_Name_{{ instance_name }}
+  loop: "{{ ec2_instance_result.instances }}"
+  tags:
+    - provision_ec2
+
+- debug:
+    var: ec2_instance_result
+  tags:
+    - provision_ec2
+
+- name: Add newly created EC2 instance to host group
+  add_host:
+    name: "{{ item.public_ip_address }}"
+    groups: tag_Name_paula
   loop: "{{ ec2_instance_result.instances }}"
   tags:
     - provision_ec2

@@ -1,0 +1,25 @@
+security_group_rules:
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 443
+    to_port: 443
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 80
+    to_port: 80
+    cidr_ip: 0.0.0.0/0
+
+key_name: paula-ansible-key
+key_pub_path: /home/paula/.ssh/id_rsa.pub
+region: us-east-1
+security_group_name: paula-ansible-security-group
+vpc_id: vpc-074ea0531b657dbb3
+image_id: ami-04b70fa74e45c3917
+instance_type: t3.small
+subnet_id: subnet-0d87441f0a6c423f1
+instance_name: paula
+access_key: "AKIAZQ3DQK2FH6EIM6X3"
+secret_key: "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"

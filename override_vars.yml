@@ -1,11 +1,47 @@
+#aws_vars
 region: "us-east-1"
 access_key: "AKIAZQ3DQK2FH6EIM6X3"
 secret_key: "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"
+
+
+
+#ec2_vars
+key_name: paula-ansible-key
+key_pub_path: /home/paula/.ssh/id_rsa.pub
+region: us-east-1
+security_group_name: paula-ansible-security-group
+vpc_id: vpc-074ea0531b657dbb3
+image_id: ami-04b70fa74e45c3917
+instance_type: t3.small
+subnet_id: subnet-0d87441f0a6c423f1
+instance_name: paula
+security_group_rules:
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 443
+    to_port: 443
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 80
+    to_port: 80
+    cidr_ip: 0.0.0.0/0
+
+#db_vars
 mysql_root_password: "Paula123@"
 mysql_db: "wordpress"
 mysql_user: "wordpress_user"
 mysql_password: "Paula123@"
 db_host: "localhost"
-github_token: "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"
+github_token: "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"
 instance_id: "{{ lookup('ansible.builtin.file', '/home/paula/ansible-AWS-WordPress-Automation/instance_ids.txt') }}"
 
+#wordpress_vars
+github_token: "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"
+mysql_db: "wordpress"
+mysql_user: "wordpress_user"
+mysql_password: "Paula123@"
+db_host: "localhost"
+github_repo_url: "github.com/paulahakeem/WordPress_abi.git"

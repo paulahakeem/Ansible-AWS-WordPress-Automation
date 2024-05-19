@@ -13,9 +13,14 @@
     state: present
   notify: Restart Apache
 
+- name: Remove existing WordPress directory
+  file:
+    path: "/var/www/html/wordpress"
+    state: absent
+
 - name: Clone WordPress from private repository with token authentication
   git:
-    repo: "https://{{ github_token }}@github.com/paulahakeem/WordPress_abi.git"
+    repo: "https://{{ github_token }}@{{ github_repo_url }}"
     dest: "/var/www/html/wordpress"
     version: master
     clone: yes

@@ -1,4 +1,0 @@
-region: "us-east-1"
-access_key: "AKIAZQ3DQK2FH6EIM6X3"
-secret_key: "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"
-instance_id: "{{ lookup('file', '/home/paula/ansible-AWS-WordPress-Automation/instance_ids.txt').splitlines() }}"

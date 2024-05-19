@@ -40,7 +40,7 @@
       id: "{{ image_id }}"
     instance_type: "{{ instance_type }}"
     wait: yes
-    count: 0
+    count: "{{ instance_count }}"
     tags:
       Name: "{{ instance_name }}"
     security_group: "{{ security_group.group_id }}"  

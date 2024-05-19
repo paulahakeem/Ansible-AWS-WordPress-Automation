@@ -4,17 +4,21 @@ access_key: "AKIAZQ3DQK2FH6EIM6X3"
 secret_key: "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"
 
 
+#ec2_lifecycle
+instance_id: "{{ lookup('file', '/home/paula/ansible-AWS-WordPress-Automation/instance_ids.txt').splitlines() }}"
+
 
 #ec2_vars
-key_name: paula-ansible-key
+key_name: pola-ansible-key
 key_pub_path: /home/paula/.ssh/id_rsa.pub
 region: us-east-1
 security_group_name: paula-ansible-security-group
 vpc_id: vpc-074ea0531b657dbb3
 image_id: ami-04b70fa74e45c3917
 instance_type: t3.small
+instance_count: 2
 subnet_id: subnet-0d87441f0a6c423f1
-instance_name: paula
+instance_name: pola
 security_group_rules:
   - proto: tcp
     from_port: 22
@@ -30,13 +34,11 @@ security_group_rules:
     cidr_ip: 0.0.0.0/0
 
 #db_vars
-mysql_root_password: "Paula123@"
 mysql_db: "wordpress"
 mysql_user: "wordpress_user"
 mysql_password: "Paula123@"
 db_host: "localhost"
-github_token: "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"
-instance_id: "{{ lookup('ansible.builtin.file', '/home/paula/ansible-AWS-WordPress-Automation/instance_ids.txt') }}"
+
 
 #wordpress_vars
 github_token: "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"
